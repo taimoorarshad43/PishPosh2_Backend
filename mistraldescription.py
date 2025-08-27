@@ -1,6 +1,6 @@
 import requests
 import base64
-from mistralai import Mistral
+from mistralai.client import MistralClient
 import os
 
 # Retrieve the API key from environment variables
@@ -10,7 +10,7 @@ api_key = os.environ["MISTRAL_API_KEY"]
 model = "pixtral-12b-2409"
 
 # Initialize the Mistral client
-client = Mistral(api_key=api_key)
+client = MistralClient(api_key=api_key)
 
 # base64_image = getimages()
 

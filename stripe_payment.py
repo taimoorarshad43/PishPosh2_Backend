@@ -3,7 +3,7 @@ import os
 from flask import jsonify
 
 # Seting up Stripe API auth
-stripe.api_key = os.environ["STRIPE_TEST_API_KEY"]
+stripe.api_key = os.environ.get("STRIPE_TEST_API_KEY")
 
 
 def create_payment_intent(amount, currency="usd"):

@@ -1,7 +1,7 @@
 import os
 from time import sleep
 
-from mistralai import Mistral
+from mistralai.client import MistralClient
 from sqlalchemy import func
 from app import app
 
@@ -11,7 +11,7 @@ from sqlalchemy.exc import IntegrityError
 api_key = os.environ["MISTRAL_API_KEY"]
 model = "mistral-large-latest"
 
-client = Mistral(api_key=api_key)
+client = MistralClient(api_key=api_key)
 
 def get_product_tag(desc, prompt=None):
 

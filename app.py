@@ -49,6 +49,9 @@ app.config['SESSION_COOKIE_NAME'] = 'session'  # Explicitly set cookie name
 app.config['SESSION_COOKIE_DOMAIN'] = None     # Allow cross-subdomain cookies
 app.config['SESSION_COOKIE_MAX_AGE'] = 3600    # 1 hour session lifetime
 
+# Fix for bytes/string issue with Redis sessions
+app.config['SESSION_REDIS_DECODE_RESPONSES'] = True
+
 # Initialize Flask-Session
 from flask_session import Session
 server_session = Session(app)
