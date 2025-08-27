@@ -19,8 +19,8 @@ def create_app(db_uri):                                 # Having the db_uri as a
 
     return app
 
-# db_uri = os.environ.get("SUPABASE_DATABASE_URI")
-db_uri = "postgresql:///pishposh"
+db_uri = os.environ.get("SUPABASE_DATABASE_URI")
+# db_uri = "postgresql:///pishposh"
 # db_uri = "postgresql:///unittest_debugging_test"
 
 app = create_app(db_uri)
@@ -35,7 +35,8 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 # Redis session configuration
 app.config['SESSION_TYPE'] = 'redis' # filesystem, memcached, redis, etc.
-app.config['SESSION_REDIS'] = redis.from_url("redis://localhost:6379")
+# app.config['SESSION_REDIS'] = redis.from_url("redis://localhost:6379")
+app.config['SESSION_REDIS'] = redis.from_url(os.environ.get("REDIS_URL", "redis://localhost:6379"))
 app.config['SESSION_COOKIE_PATH'] = '/'
 app.config['SESSION_COOKIE_SECURE'] = True # This fixed race condition issue.
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
