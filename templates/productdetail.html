@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{%block content%}
+<h1 class = 'ml-3 mt-3'>{{product.productname}}</h1>
+
+<div class = 'container'>
+    <div class = 'row text-center'>
+        <div class = 'col-6'>
+            <img class = "mt-5" src="data:image/jpeg;base64,{{ product.decode_image() }}" alt="{{product.productname}}">
+        </div>
+        <div class = 'col-6'>
+            <h5 class = 'mb-5'>
+                {{product.productdescription}}
+            </h5>
+            <h6 class = 'mb-5'>
+                <a href = "/user/{{product.user.id}}">By: {{product.user.username}}</a>
+            </h6>
+            <h6 class = 'mb-5'>
+                Price: ${{product.price}}.00
+            </h6>
+            <form action = '/product/{{product.productid}}/addtocart' method = 'POST'>
+                <input type = 'submit' class = 'add-to-cart btn btn-primary' value = "Add to Cart">
+            </form>
+            <form action = '/product/{{product.productid}}/removefromcart' method = 'POST'>
+                <input type = 'submit' class = 'remove-from-cart btn btn-secondary' value = 'Remove From Cart'><br></br>
+            </form>
+            <a href = '/cart' class = 'checkout btn btn-info'>View Cart</a>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- <script>
+
+    // let productid = {{product.productid|tojson}};
+
+    // $('.add-to-cart').on("click", function(){
+    //     fetch(`/product/${productid}/cart`, 
+    //         {method: 'POST'}
+    //     )
+    //     location.reload();
+    // })
+
+    // $('.remove-from-cart').on("click", function(){
+    //     fetch(`/product/${productid}/remove`, 
+    //         {method: 'POST'}
+    //     )
+    //     location.reload();
+    // })
+</script> -->
+
+<!-- To pass the value from Jinja to JS, we just use the following template
+ value|json in Jinja brackets -->
+
+{%endblock%}

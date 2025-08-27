@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{%block headcontent%}
+<script src="https://js.stripe.com/v3/"></script>
+{%endblock%}
+
+{%block content%}
+
+<div class = 'container'>
+    <div class = 'mt-5 row text-center'>
+        <div class = 'col-8'>
+            {% for product in products %}
+            <div class = 'mt-5'>
+                {% if product.decode_image() %}
+                <img src="data:image/jpeg;base64,{{ product.decode_image() }}" alt="{{ product.name }}"><br></br>
+                <a href = '/product/{{product.productid}}'>{{product.productname}}</a><span class = "badge ml-3"> Price: ${{product.price}}.00</span>
+                {% endif %}        
+            </div>
+            {%endfor%}
+            <p class = "badge badge-pill badge-primary mt-5">Subtotal: ${{subtotal}}.00</p>
+        </div>
+        <div class = 'col-4'>
+            <form id="payment-form" data-secret="{{client_secret}}">
+                <div id="payment-element">
+                  <!-- placeholder for Elements -->
+                </div>
+                <button class = "mt-4 btn btn-primary" id="submit">Submit</button>
+                <a href="/cart" class = 'mt-4 btn btn-secondary'>Cancel</a>
+              </form>
+              <div class = "text-danger text-center" id="error-message"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- We'll render the products to checkout through the cart session object -->
+
+<!-- Will add Stripe's Payment Elements here -->
+
+<script>
+
+const stripe = Stripe('pk_test_51QIZ5VGS3ixkvINIJUDHhSJtcl3I5rpMFX4JEt228TH9Mw5vtM3yXryMfcnnOisTAt7rslzRbZDdBcPcxyIruU5400GeH1HxJH');
+
+const options = {
+    clientSecret: {{client_secret|tojson}} // Passing this from Python and Jinja to JS here
+  };
+  
+// Stripe Elements set up, passing the Client secret here.
+const elements = stripe.elements(options);
+
+// console.log(elements)
+  
+// Create and mount the Payment Element
+const paymentElement = elements.create('payment');
+paymentElement.mount('#payment-element');
+
+
+const form = document.getElementById('payment-form');
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const {error} = await stripe.confirmPayment({
+    //`Elements` instance that was used to create the Payment Element
+    elements,
+    confirmParams: {
+      return_url: 'https://pishposh.onrender.com/confirmation',
+    },
+  });
+
+  if (error) {
+    // This point will only be reached if there is an immediate error when
+    // confirming the payment. Show error to your customer (for example, payment
+    // details incomplete)
+    const messageContainer = document.querySelector('#error-message');
+    messageContainer.textContent = error.message;
+  } else {
+    // Your customer will be redirected to your `return_url`. For some payment
+    // methods like iDEAL, your customer will be redirected to an intermediate
+    // site first to authorize the payment, then redirected to the `return_url`.
+  }
+});
+    
+</script>
+
+{%endblock%}

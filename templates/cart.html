@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{%block content%}
+
+<h1 class = 'ml-3 mt-3'>{{session['userfirstname']}}'s Cart</h1>
+
+<div class = 'container'>
+    {% if products %}
+        <div class = 'row text-center'>
+            <div class = 'col-8'>
+                {% for product in products %}
+                    <div class = 'mt-5'>
+                        {% if product.decode_image() %}
+                        <img src="data:image/jpeg;base64,{{ product.decode_image() }}" alt="{{ product.name }}"><br></br>
+                        <a href = '/product/{{product.productid}}'>{{product.productname}}</a><span class = "badge ml-3"> Price: ${{product.price}}.00</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class = 'col-4'>
+                    <p class="badge badge-pill badge-primary">Subtotal: ${{subtotal}}.00</p>
+            </div>
+        </div>
+
+        <div class = 'row text-center'>
+            <div class = 'col-12 mt-5 text-center'>
+                <a href = '/checkout' class = "btn btn-info">Checkout</a>
+            </div>
+        </div>
+
+    {% else %}
+        <h4 class = 'display-4 text-center'>Nothing in Cart</h3>
+    {% endif %}
+
+    <!-- Need to refactor to be a form submit button to /checkout -->
+
+</div>
+
+
+{%endblock%}

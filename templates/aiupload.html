@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{%block content%}
+<h1 class = 'text-center ml-3 mt-3 mb-5'>Use AI to Describe Your Product</h1>
+
+<div class = 'container'>
+    <div class = 'row text-center'>
+        <!-- Upload new product listing form -->
+        <div class = 'col-12 text-center'>
+            <h2 class = 'mt-5 mb-5 text-primary'>Upload a Picture</h5>
+            <form class = "upload-data" action = "/upload/{{user.id}}" method = "POST" enctype = "multipart/form-data">
+
+                <!-- <input id = "upload-file" type="file" name = "file" accept = "image/*"><br></br> -->
+                {{ form.csrf_token }}
+                {{ form.image(id = "upload-file", type = "file", accept = "image/*") }}<br></br>
+
+                <!-- Placeholder for preview of uploaded image, will be set to display:none until user uploads an image -->
+                <div class = "d-flex justify-content-center align-items-center">
+                    <img class="img-fluid" id="image-preview" src="" alt="Image Preview" style="display: none; max-width: 300px; max-height: 300px;"><br></br>
+                </div>
+
+                <!-- These will have their display set to "none" and we'll change that via JS after getting a user uploaded image -->
+                <!-- After upload, they'll be populated with AI generated descriptions -->
+
+                {{form.name.label(class_="product-field btn-primary mt-3 mb-3", for="upload-file", style = "display: none;")}}
+                {{form.name(class_="product-field", style = "display: none;", id = "product-title")}}<br></br>
+
+                {{form.description.label(class_="product-field btn-primary mt-3 mb-3", for="upload-file", style = "display: none;")}}
+                {{form.description(class_="product-field", style = "display: none;", id = "product-desc")}}<br></br>
+
+                {{form.price.label(class_="product-field btn-primary mt-3 mb-3", for="upload-file", style = "display: none;")}}
+                {{form.price(class_="product-field", style = "display: none;")}}<br></br>
+
+                <!-- <label class = "product-field btn-primary mt-3 mb-3" for = 'upload-file' style="display: none;">Product Name</label>
+                <input id = "product-title" class = "product-field" type="text" name = "productname" style="display: none;"><br></br>
+
+                <label class = "product-field btn-primary mb-3" for = 'upload-file' style="display: none;">Product Description</label>
+                <input id = "product-desc" class = "product-field" type="text" name = "productdescription" style="display: none;"><br></br>
+
+                <label class = "product-field btn-primary mb-3" for = 'upload-file' style="display: none;">Product Price</label>
+                <input class = "product-field" type="text" name = "productprice" style="display: none;"><br></br> -->
+
+                <input id = "submit-btn" class = "btn btn-primary mt-2" type="submit" value="Confirm?" style="display: none;">
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+// Using this to get a preview of the image to display to the user
+
+$("#upload-file").on("change", async function(event) {
+  const file = event.target.files[0]; // Get the selected file
+  if (file) {
+    const reader = new FileReader(); // Create a FileReader object
+    reader.onload = function(e) {
+      const imgPreview = document.getElementById('image-preview');
+      imgPreview.src = e.target.result; // Set the image source to the file content
+      imgPreview.style.display = 'block'; // Make the image visible
+    };
+    reader.readAsDataURL(file); // Read the file as a data URL
+  }
+
+  const formData = new FormData();
+  formData.append('file', file); // 'file' is the field name expected by backend
+
+  let response = null;
+
+  try {
+    response = await axios.post("/upload/aiprocess", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    console.log('Upload successful:', response.data);
+  } catch (error) {
+    console.error('Upload failed:', error);
+  }
+
+  $(".product-field").show();       // Show the product fields and populate them with AI title and description
+  $("#product-title").attr("value", response.data.title)
+  // $("#product-desc").attr("value", response.data.description)
+  $("#product-desc").text(response.data.description)
+
+  
+  $("#submit-btn").show();          // Show the upload button after an image has been selected by user
+
+
+});
+
+</script>
+
+{%endblock%}

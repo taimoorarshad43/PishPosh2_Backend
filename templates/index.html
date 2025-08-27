@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{%block content%}
+
+<h1 class = 'text-center mt-3'>Welcome to PishPosh (Beta)</h1>
+
+<div class = 'container'>
+    <div class = 'row text-center'>
+
+        {% if products %}
+
+            {% for product in products %}
+            <div class = 'col-3 mt-5'>
+                {% if product.decode_image() %}
+                <img src="data:image/jpeg;base64,{{ product.decode_image() }}" alt="{{ product.name }}"><br></br>
+                <a class = 'btn btn-primary' href = '/product/{{product.productid}}'>{{product.productname}}</a>
+                {% endif %}        
+            </div>
+            {%endfor%}
+
+        {% else %}
+            <div class = 'container'>
+                <h4 class = 'display-4 text-center'>No More Products</h3>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div class = "container text-center mt-5 mb-5">
+    {% if products %}
+        <span><a class = "btn btn-primary mr-5" href = "/?page=previous">Previous Page</a><a class="btn btn-primary ml-5" href="/?page=next">Next Page</a></span>
+    {% else %}
+        <span><a class = "btn btn-primary mr-5" href = "/?page=previous">Previous Page</a></span>  <!-- If no products, no need to go to the next page-->
+    {% endif %}
+
+</div>
+
+{%endblock%}

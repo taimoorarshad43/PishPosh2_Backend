@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{%block content%}
+<h1 class = 'ml-3 mt-3 mb-5'>{{user.firstname}}'s Profile Page</h1>
+
+<div class = 'container'>
+    <div class = 'row text-center'>
+        <div class = 'col-6'>
+            <!-- User's full name -->
+            <h2 class = 'mb-5'>
+                {{user.fullname()}}'s Products
+            </h2>
+            <!-- User's listed products, if any -->
+            {% for product in products %}
+            <div class = 'mb-5'>
+                {% if product.decode_image() %}
+                <img src="data:image/jpeg;base64,{{ product.decode_image() }}" alt="{{ product.name }}"><br></br>
+                <a class = 'btn btn-primary' href = '/product/{{product.productid}}'>{{product.productname}}</a><span class = "badge ml-3"> Price: ${{product.price}}.00</span>
+                <span class = "badge ml-3"><a href = "/product/{{product.productid}}/delete">Delete?</a></span>
+                {% endif %}        
+            </div>
+            {%endfor%} 
+
+        </div>
+        <!-- Upload new product listing form -->
+        <div class = 'col-6 text-left'>
+            <h2 class = 'mb-5'>Add New Product Listing?</h5>
+            <form action = "/upload/{{user.id}}" method="POST" enctype = "multipart/form-data">
+                {{ form.hidden_tag() }}
+                
+                {% for field in form
+                    if field.widget.input_type != 'hidden' %}
+
+                <p>
+                    {{ field.label(class_ = "btn-primary mb-3") }}
+                    {{ field }}
+
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </p>
+
+                {% endfor %}
+                <input class = "submit-button btn btn-primary mt-3" type="submit" value="Confirm?">
+            </form>
+            <a class = "mb-3 text-primary" href = '/upload/{{user.id}}/ai'>Add AI description?</a>
+        </div>
+
+    </div>
+</div>
+
+{%endblock%}
+
+<script>
+
+
+
+</script>
