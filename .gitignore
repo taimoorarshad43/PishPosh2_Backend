@@ -1,0 +1,16 @@
+*venv*
+*pycache*
+*backup*
+*notes*
+*key*
+*consumer_examples*
+*testinggrounds*
+*cert.*
+*key.*
+.env
+*node_modules*
+*package-lock.json
+*package-lock.json*
+react/package-lock.json
+*flask_session*
+*flask_session/*
