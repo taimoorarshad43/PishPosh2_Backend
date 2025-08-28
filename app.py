@@ -82,7 +82,7 @@ toolbar = DebugToolbarExtension(app)
 
 CORS(app, 
      supports_credentials=True, 
-     origins=["http://127.0.0.1:5173", "http://localhost:5173"],
+     origins=["http://127.0.0.1:5173", "http://localhost:5173", "https://pishposh2-frontend.onrender.com"],
      allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      expose_headers=["Set-Cookie"],
