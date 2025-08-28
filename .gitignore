@@ -14,3 +14,4 @@
 react/package-lock.json
 *flask_session*
 *flask_session/*
+CORS_SETUP.md
