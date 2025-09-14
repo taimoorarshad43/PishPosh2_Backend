@@ -1,6 +1,6 @@
 import requests
 import base64
-from mistralai.client import MistralClient
+from mistralai import Mistral
 import os
 
 # Retrieve the API key from environment variables
@@ -10,7 +10,7 @@ api_key = os.environ["MISTRAL_API_KEY"]
 model = "pixtral-12b-2409"
 
 # Initialize the Mistral client
-client = MistralClient(api_key=api_key)
+client = Mistral(api_key=api_key)
 
 # base64_image = getimages()
 
@@ -20,9 +20,8 @@ def getimages():
                                     # Very temp TODO: Remove and debug
     img_data = requests.get(img_url, verify=False).content
 
-    # Getting the base64 string
-    # img_data_encoded = base64.b64encode(img_data).decode('utf-8')
-    img_data_encoded = base64.b64encode(img_data)
+    # Getting the base64 string - decode to utf-8 for proper string format
+    img_data_encoded = base64.b64encode(img_data).decode('utf-8')
 
     return img_data_encoded
 
@@ -32,7 +31,7 @@ def encodeimage(img_data):
     Helper function to base64 encode and decode for AI processing
     """
 
-    img_data= base64.b64encode(img_data.read())
+    img_data= base64.b64encode(img_data.read()).decode('utf-8')
     # print("From encodeimage() - encoded img_data is: ", img_data)
 
     return img_data
