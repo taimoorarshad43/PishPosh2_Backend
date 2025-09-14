@@ -38,9 +38,10 @@ def encodeimage(img_data):
 
 def decodeimage(img_data):
 
-    # print("From decodeimage() - decoded img_data is: ", img_data.decode('utf-8'))
+    # print("From decodeimage() - img_data is already a string: ", img_data)
 
-    return img_data.decode('utf-8')
+    # img_data is already a base64 string from encodeimage, so just return it
+    return img_data
 
 
 
